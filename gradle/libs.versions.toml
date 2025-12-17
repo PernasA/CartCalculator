@@ -12,7 +12,8 @@ androidx-testExt = "1.3.0"
 composeMultiplatform = "1.9.3"
 junit = "4.13.2"
 kotlin = "2.3.0"
-mlkit = "17.3.0"
+mlkit-vision = "17.3.0"
+mlkit-text = "16.0.1"
 
 [libraries]
 kotlin-test = { module = "org.jetbrains.kotlin:kotlin-test", version.ref = "kotlin" }
@@ -25,9 +26,9 @@ androidx-appcompat = { module = "androidx.appcompat:appcompat", version.ref = "a
 androidx-activity-compose = { module = "androidx.activity:activity-compose", version.ref = "androidx-activity" }
 androidx-lifecycle-viewmodelCompose = { module = "org.jetbrains.androidx.lifecycle:lifecycle-viewmodel-compose", version.ref = "androidx-lifecycle" }
 androidx-lifecycle-runtimeCompose = { module = "org.jetbrains.androidx.lifecycle:lifecycle-runtime-compose", version.ref = "androidx-lifecycle" }
-mlkit-vision = { module = "com.google.mlkit:vision-common", version.ref = "mlkit" }
-mlkit-text-recognition = { module = "com.google.mlkit:text-recognition", version.ref = "mlkit" }
-mlkit-text-recognition-latin = { module = "com.google.mlkit:text-recognition-latin", version.ref = "mlkit" }
+mlkit-vision = { module = "com.google.mlkit:vision-common", version.ref = "mlkit-vision" }
+mlkit-text-recognition = { module = "com.google.mlkit:text-recognition", version.ref = "mlkit-text" }
+mlkit-text-recognition-latin = { module = "com.google.mlkit:text-recognition-latin", version.ref = "mlkit-text" }
 
 [plugins]
 androidApplication = { id = "com.android.application", version.ref = "agp" }
