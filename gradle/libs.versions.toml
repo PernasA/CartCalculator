@@ -28,7 +28,6 @@ androidx-lifecycle-viewmodelCompose = { module = "org.jetbrains.androidx.lifecyc
 androidx-lifecycle-runtimeCompose = { module = "org.jetbrains.androidx.lifecycle:lifecycle-runtime-compose", version.ref = "androidx-lifecycle" }
 mlkit-vision = { module = "com.google.mlkit:vision-common", version.ref = "mlkit-vision" }
 mlkit-text-recognition = { module = "com.google.mlkit:text-recognition", version.ref = "mlkit-text" }
-mlkit-text-recognition-latin = { module = "com.google.mlkit:text-recognition-latin", version.ref = "mlkit-text" }
 
 [plugins]
 androidApplication = { id = "com.android.application", version.ref = "agp" }

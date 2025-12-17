@@ -32,7 +32,6 @@ kotlin {
             //ML Kit
             implementation(libs.mlkit.vision)
             implementation(libs.mlkit.text.recognition)
-            implementation(libs.mlkit.text.recognition.latin)
         }
         commonMain.dependencies {
             implementation(compose.runtime)
