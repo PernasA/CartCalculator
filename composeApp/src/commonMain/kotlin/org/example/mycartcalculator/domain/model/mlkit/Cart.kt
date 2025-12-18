@@ -1,6 +1,6 @@
 package org.example.mycartcalculator.domain.model.mlkit
 
-import org.example.mycartcalculator.domain.model.Product
+import org.example.mycartcalculator.domain.model.product.Product
 
 data class Cart(
     val items: List<Product> = emptyList()

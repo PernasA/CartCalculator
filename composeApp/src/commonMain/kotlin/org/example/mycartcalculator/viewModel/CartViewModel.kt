@@ -9,7 +9,7 @@ import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import org.example.mycartcalculator.domain.model.Product
+import org.example.mycartcalculator.domain.model.product.Product
 import org.example.mycartcalculator.domain.usecase.ParseReceiptUseCase
 import org.example.mycartcalculator.domain.usecase.RecognizeTextUseCase
 import org.example.mycartcalculator.expect.ImageData

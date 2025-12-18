@@ -1,6 +1,6 @@
 package org.example.mycartcalculator.view.intent
 
-import org.example.mycartcalculator.domain.model.Product
+import org.example.mycartcalculator.domain.model.product.Product
 import org.example.mycartcalculator.expect.ImageData
 
 sealed interface CartIntent {
