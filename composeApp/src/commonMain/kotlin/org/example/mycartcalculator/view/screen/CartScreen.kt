@@ -1,4 +1,4 @@
-package org.example.mycartcalculator.view
+package org.example.mycartcalculator.view.screen
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box

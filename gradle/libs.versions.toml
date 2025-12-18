@@ -15,6 +15,7 @@ kotlin = "2.3.0"
 mlkit-vision = "17.3.0"
 mlkit-text = "16.0.1"
 icons-compose = "1.7.3"
+voyager = "1.0.1"
 
 [libraries]
 kotlin-test = { module = "org.jetbrains.kotlin:kotlin-test", version.ref = "kotlin" }
@@ -30,6 +31,9 @@ androidx-lifecycle-runtimeCompose = { module = "org.jetbrains.androidx.lifecycle
 mlkit-vision = { module = "com.google.mlkit:vision-common", version.ref = "mlkit-vision" }
 mlkit-text-recognition = { module = "com.google.mlkit:text-recognition", version.ref = "mlkit-text" }
 compose-icons-extended = { module = "org.jetbrains.compose.material:material-icons-extended", version.ref = "icons-compose" }
+voyager-core = { module = "cafe.adriel.voyager:voyager-core", version.ref = "voyager" }
+voyager-navigator = { module = "cafe.adriel.voyager:voyager-navigator", version.ref = "voyager" }
+voyager-tab-navigator = { module = "cafe.adriel.voyager:voyager-tab-navigator", version.ref = "voyager" }
 
 [plugins]
 androidApplication = { id = "com.android.application", version.ref = "agp" }
