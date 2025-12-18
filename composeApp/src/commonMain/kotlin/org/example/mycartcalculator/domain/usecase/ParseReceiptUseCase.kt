@@ -17,7 +17,7 @@ class ParseReceiptUseCase {
             }
     }
 
-    fun parseReceiptBlock(lines: List<String>): ReceiptItem? {
+    private fun parseReceiptBlock(lines: List<String>): ReceiptItem? {
 
         if (lines.size < 2) return null
 
