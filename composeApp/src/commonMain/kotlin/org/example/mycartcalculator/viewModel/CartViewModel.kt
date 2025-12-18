@@ -33,6 +33,8 @@ class CartViewModel(
         when (intent) {
             CartIntent.OnScanReceiptClicked -> openCamera()
             is CartIntent.OnImageCaptured -> processImage(intent.imageData)
+            is CartIntent.OnConfirmProduct -> confirmProduct(intent.product)
+            CartIntent.OnCancelProduct -> cancelProduct()
         }
     }
 
@@ -52,13 +54,10 @@ class CartViewModel(
 
                 products
             }.onSuccess { products ->
-                println("Parced products: $products")
                 updateState {
                     copy(
                         isLoading = false,
-                        cart = cart.copy(
-                            items = cart.items + products
-                        )
+                        pendingProduct = products.firstOrNull()
                     )
                 }
             }.onFailure {
@@ -83,4 +82,22 @@ class CartViewModel(
             _effect.emit(effect)
         }
     }
+
+    private fun confirmProduct(product: Product) {
+        updateState {
+            copy(
+                pendingProduct = null,
+                cart = cart.copy(
+                    items = cart.items + product
+                )
+            )
+        }
+    }
+
+    private fun cancelProduct() {
+        updateState {
+            copy(pendingProduct = null)
+        }
+    }
+
 }

@@ -67,6 +67,14 @@ fun CartScreenHost(
         state = state,
         onScanClicked = {
             viewModel.onIntent(CartIntent.OnScanReceiptClicked)
+        },
+        onConfirmProduct = { product ->
+            viewModel.onIntent(
+                CartIntent.OnConfirmProduct(product)
+            )
+        },
+        onCancelProduct = {
+            viewModel.onIntent(CartIntent.OnCancelProduct)
         }
     )
 }
