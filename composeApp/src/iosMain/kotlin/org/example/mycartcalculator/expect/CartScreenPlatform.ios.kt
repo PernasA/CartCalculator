@@ -4,6 +4,6 @@ import androidx.compose.runtime.Composable
 import org.example.mycartcalculator.viewModel.CartViewModel
 
 @Composable
-actual fun CartScreenPlatform() {
+actual fun CartScreenPlatform(cartViewModel: CartViewModel) {
     // iOS-specific implementation of the CartScreenPlatform
 }

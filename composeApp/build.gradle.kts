@@ -29,9 +29,13 @@ kotlin {
             implementation(compose.preview)
             implementation(libs.androidx.activity.compose)
 
-            //ML Kit
+            // ML Kit
             implementation(libs.mlkit.vision)
             implementation(libs.mlkit.text.recognition)
+
+            // Koin
+            implementation(libs.koin.android)
+            implementation(libs.koin.compose)
         }
         commonMain.dependencies {
             implementation(compose.runtime)
@@ -48,6 +52,8 @@ kotlin {
             implementation(libs.voyager.core)
             implementation(libs.voyager.navigator)
             implementation(libs.voyager.tab.navigator)
+
+            implementation(libs.koin.core)
         }
         commonTest.dependencies {
             implementation(libs.kotlin.test)

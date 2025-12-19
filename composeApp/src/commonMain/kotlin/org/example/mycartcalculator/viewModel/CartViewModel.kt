@@ -1,6 +1,9 @@
 package org.example.mycartcalculator.viewModel
 
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.cancel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharedFlow
@@ -19,9 +22,10 @@ import org.example.mycartcalculator.view.state.CartState
 
 class CartViewModel(
     private val recognizeTextUseCase: RecognizeTextUseCase,
-    private val parseReceiptUseCase: ParseReceiptUseCase,
-    private val coroutineScope: CoroutineScope
+    private val parseReceiptUseCase: ParseReceiptUseCase
 ) {
+
+    private val scope = CoroutineScope(SupervisorJob() + Dispatchers.Main)
 
     private val _state = MutableStateFlow(CartState())
     val state: StateFlow<CartState> = _state.asStateFlow()
@@ -43,16 +47,13 @@ class CartViewModel(
     }
 
     private fun processImage(imageData: ImageData) {
-        coroutineScope.launch {
+        scope.launch {
             updateState { copy(isLoading = true) }
 
             runCatching {
                 val recognizedText = recognizeTextUseCase(imageData)
-                println("Recognized Text: $recognizedText")
-                val products = parseReceiptUseCase(recognizedText)
+                parseReceiptUseCase(recognizedText)
                     .map { Product(it.name, it.price) }
-
-                products
             }.onSuccess { products ->
                 updateState {
                     copy(
@@ -62,42 +63,33 @@ class CartViewModel(
                 }
             }.onFailure {
                 updateState { copy(isLoading = false) }
-                emitEffect(
-                    CartEffect.ShowError("Error procesando el ticket")
-                )
+                emitEffect(CartEffect.ShowError("Error procesando el ticket"))
             }
         }
     }
 
     private fun updateState(reducer: CartState.() -> CartState) {
-        _state.update {
-            val newState = it.reducer()
-            println("New state: $newState")
-            newState
-        }
+        _state.update(reducer)
     }
 
     private fun emitEffect(effect: CartEffect) {
-        coroutineScope.launch {
-            _effect.emit(effect)
-        }
+        scope.launch { _effect.emit(effect) }
     }
 
     private fun confirmProduct(product: Product) {
         updateState {
             copy(
                 pendingProduct = null,
-                cart = cart.copy(
-                    items = cart.items + product
-                )
+                cart = cart.copy(items = cart.items + product)
             )
         }
     }
 
     private fun cancelProduct() {
-        updateState {
-            copy(pendingProduct = null)
-        }
+        updateState { copy(pendingProduct = null) }
     }
 
+    fun clear() {
+        scope.cancel()
+    }
 }

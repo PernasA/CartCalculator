@@ -5,6 +5,6 @@ import org.example.mycartcalculator.view.CartScreenHostAndroid
 import org.example.mycartcalculator.viewModel.CartViewModel
 
 @Composable
-actual fun CartScreenPlatform() {
-    CartScreenHostAndroid()
+actual fun CartScreenPlatform(cartViewModel: CartViewModel) {
+    CartScreenHostAndroid(cartViewModel)
 }

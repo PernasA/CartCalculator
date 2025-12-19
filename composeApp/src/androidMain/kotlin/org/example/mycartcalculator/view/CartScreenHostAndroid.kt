@@ -21,17 +21,12 @@ import org.example.mycartcalculator.view.screen.CartScreen
 import org.example.mycartcalculator.viewModel.CartViewModel
 
 @Composable
-fun CartScreenHostAndroid() {
+fun CartScreenHostAndroid(
+    cartViewModel: CartViewModel
+) {
     val context = LocalContext.current
     val lifecycleOwner = LocalLifecycleOwner.current
 
-    val cartViewModel = remember {
-        CartViewModel(
-            RecognizeTextUseCase(MlKitTextRecognitionRepository(context)),
-            ParseReceiptUseCase(),
-            lifecycleOwner.lifecycleScope
-        )
-    }
     val cameraLauncher =
         rememberLauncherForActivityResult(
             ActivityResultContracts.TakePicturePreview()

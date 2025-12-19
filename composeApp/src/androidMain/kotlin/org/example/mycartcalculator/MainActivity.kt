@@ -8,14 +8,13 @@ import androidx.activity.enableEdgeToEdge
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.lifecycle.lifecycleScope
 import cafe.adriel.voyager.navigator.tab.TabNavigator
-import org.example.mycartcalculator.data.MlKitTextRecognitionRepository
-import org.example.mycartcalculator.domain.usecase.ParseReceiptUseCase
-import org.example.mycartcalculator.domain.usecase.RecognizeTextUseCase
+import org.example.mycartcalculator.di.androidModule
+import org.example.mycartcalculator.di.commonModule
 import org.example.mycartcalculator.navigation.AppRoot
 import org.example.mycartcalculator.navigation.CartTab
-import org.example.mycartcalculator.viewModel.CartViewModel
+import org.koin.android.ext.koin.androidContext
+import org.koin.core.context.GlobalContext.startKoin
 
 class MainActivity : ComponentActivity() {
 
@@ -25,17 +24,15 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
 
-        val cartViewModel = CartViewModel(
-            RecognizeTextUseCase(MlKitTextRecognitionRepository(this)),
-            ParseReceiptUseCase(),
-            lifecycleScope
-        )
+        startKoin {
+            androidContext(this@MainActivity)
+            modules(commonModule, androidModule)
+        }
 
         setContent {
             MaterialTheme {
 
                 AppRoot(
-                    cartViewModel = cartViewModel,
                     onTabNavigatorReady = { navigator ->
                         tabNavigator = navigator
                     }
