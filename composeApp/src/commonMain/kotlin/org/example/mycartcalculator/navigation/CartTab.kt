@@ -9,9 +9,7 @@ import org.example.mycartcalculator.viewModel.CartViewModel
 import cafe.adriel.voyager.navigator.tab.Tab
 import cafe.adriel.voyager.navigator.tab.TabOptions
 
-class CartTab(
-    private val cartViewModel: CartViewModel
-) : Tab {
+class CartTab: Tab {
 
     override val key: String = "cart"
 
@@ -25,6 +23,6 @@ class CartTab(
 
     @Composable
     override fun Content() {
-        CartScreenPlatform(cartViewModel)
+        CartScreenPlatform()
     }
 }

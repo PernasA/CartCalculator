@@ -21,7 +21,7 @@ fun AppRoot(
     cartViewModel: CartViewModel,
     onTabNavigatorReady: (TabNavigator) -> Unit
 ) {
-    val cartTab = remember { CartTab(cartViewModel) }
+    val cartTab = remember { CartTab() }
     val historyTab = remember { HistoryTab() }
     val settingsTab = remember { SettingsTab() }
 

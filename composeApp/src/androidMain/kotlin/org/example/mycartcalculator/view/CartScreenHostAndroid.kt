@@ -7,8 +7,13 @@ import androidx.activity.result.launch
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.platform.LocalContext
+import androidx.lifecycle.compose.LocalLifecycleOwner
+import androidx.lifecycle.lifecycleScope
+import org.example.mycartcalculator.data.MlKitTextRecognitionRepository
+import org.example.mycartcalculator.domain.usecase.ParseReceiptUseCase
+import org.example.mycartcalculator.domain.usecase.RecognizeTextUseCase
 import org.example.mycartcalculator.expect.ImageData
 import org.example.mycartcalculator.view.effect.CartEffect
 import org.example.mycartcalculator.view.intent.CartIntent
@@ -16,13 +21,17 @@ import org.example.mycartcalculator.view.screen.CartScreen
 import org.example.mycartcalculator.viewModel.CartViewModel
 
 @Composable
-fun CartScreenHostAndroid(
-    cartViewModel: CartViewModel
-) {
+fun CartScreenHostAndroid() {
     val context = LocalContext.current
+    val lifecycleOwner = LocalLifecycleOwner.current
 
-    val state by cartViewModel.state.collectAsState()
-
+    val cartViewModel = remember {
+        CartViewModel(
+            RecognizeTextUseCase(MlKitTextRecognitionRepository(context)),
+            ParseReceiptUseCase(),
+            lifecycleOwner.lifecycleScope
+        )
+    }
     val cameraLauncher =
         rememberLauncherForActivityResult(
             ActivityResultContracts.TakePicturePreview()
@@ -49,7 +58,7 @@ fun CartScreenHostAndroid(
     }
 
     CartScreen(
-        state = state,
+        state = cartViewModel.state.collectAsState().value,
         onScanClicked = {
             cartViewModel.onIntent(CartIntent.OnScanReceiptClicked)
         },
