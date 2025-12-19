@@ -38,7 +38,10 @@ class CartViewModel(
             CartIntent.OnScanReceiptClicked -> openCamera()
             is CartIntent.OnImageCaptured -> processImage(intent.imageData)
             is CartIntent.OnConfirmProduct -> confirmProduct(intent.product)
+            is CartIntent.IncreaseQuantity -> increaseQuantity(intent.product)
+            is CartIntent.DecreaseQuantity -> decreaseQuantity(intent.product)
             CartIntent.OnCancelProduct -> cancelProduct()
+            CartIntent.OnSaveCartClicked -> openDialogSaveCart()
         }
     }
 
@@ -66,6 +69,44 @@ class CartViewModel(
                 emitEffect(CartEffect.ShowError("Error procesando el ticket"))
             }
         }
+    }
+
+    private fun increaseQuantity(product: Product) {
+        updateState {
+            copy(
+                cart = cart.copy(
+                    items = cart.items.map {
+                        if (it == product) {
+                            it.copy(quantity = it.quantity + 1)
+                        } else {
+                            it
+                        }
+                    }
+                )
+            )
+        }
+    }
+
+    private fun decreaseQuantity(product: Product) {
+        updateState {
+            copy(
+                cart = cart.copy(
+                    items = cart.items
+                        .map {
+                            if (it == product) {
+                                it.copy(quantity = (it.quantity - 1).coerceAtLeast(1))
+                            } else {
+                                it
+                            }
+                        }
+                        .filter { it.quantity > 0 }
+                )
+            )
+        }
+    }
+
+    private fun openDialogSaveCart() {
+        emitEffect(CartEffect.ShowError("Funcionalidad no implementada"))
     }
 
     private fun updateState(reducer: CartState.() -> CartState) {

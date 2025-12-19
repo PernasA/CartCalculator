@@ -7,13 +7,7 @@ import androidx.activity.result.launch
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.remember
 import androidx.compose.ui.platform.LocalContext
-import androidx.lifecycle.compose.LocalLifecycleOwner
-import androidx.lifecycle.lifecycleScope
-import org.example.mycartcalculator.data.MlKitTextRecognitionRepository
-import org.example.mycartcalculator.domain.usecase.ParseReceiptUseCase
-import org.example.mycartcalculator.domain.usecase.RecognizeTextUseCase
 import org.example.mycartcalculator.expect.ImageData
 import org.example.mycartcalculator.view.effect.CartEffect
 import org.example.mycartcalculator.view.intent.CartIntent
@@ -25,7 +19,6 @@ fun CartScreenHostAndroid(
     cartViewModel: CartViewModel
 ) {
     val context = LocalContext.current
-    val lifecycleOwner = LocalLifecycleOwner.current
 
     val cameraLauncher =
         rememberLauncherForActivityResult(
@@ -62,6 +55,15 @@ fun CartScreenHostAndroid(
         },
         onCancelProduct = {
             cartViewModel.onIntent(CartIntent.OnCancelProduct)
+        },
+        onIncreaseQuantity = {
+            cartViewModel.onIntent(CartIntent.IncreaseQuantity(it))
+        },
+        onDecreaseQuantity = {
+            cartViewModel.onIntent(CartIntent.DecreaseQuantity(it))
+        },
+        onSaveCartClicked = {
+            cartViewModel.onIntent(CartIntent.OnSaveCartClicked)
         }
     )
 }

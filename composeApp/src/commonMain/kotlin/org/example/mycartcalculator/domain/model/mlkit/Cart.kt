@@ -6,5 +6,5 @@ data class Cart(
     val items: List<Product> = emptyList()
 ) {
     val total: Double
-        get() = items.sumOf { it.price }
+        get() = items.sumOf { it.price * it.quantity }
 }
