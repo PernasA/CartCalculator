@@ -15,6 +15,7 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.CameraAlt
 import androidx.compose.material.icons.filled.Check
+import androidx.compose.material.icons.filled.DocumentScanner
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
@@ -31,6 +32,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
@@ -105,14 +107,15 @@ fun ScanReceiptButton(
         shape = RoundedCornerShape(16.dp)
     ) {
         Icon(
-            imageVector = Icons.Default.CameraAlt,
+            imageVector = Icons.Default.DocumentScanner,
             contentDescription = null
         )
         Spacer(Modifier.width(12.dp))
         Text(
-            text = if (isLoading) "Procesando..." else "Escanear ticket",
+            text = if (isLoading) "Procesando..." else "Escanear precio",
             fontSize = 16.sp,
-            fontWeight = FontWeight.Medium
+            fontWeight = FontWeight.Medium,
+            color = Color.White
         )
     }
 }
@@ -130,19 +133,20 @@ fun CartFooter(
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(vertical = 12.dp),
+                .padding(vertical = 14.dp, horizontal = 2.dp),
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
-            Text("Total", fontWeight = FontWeight.Medium)
+            Text("Total", fontWeight = FontWeight.Medium, fontSize = 20.sp)
             Text(
                 total.formatPrice(),
                 fontWeight = FontWeight.Bold,
-                fontSize = 18.sp
+                fontSize = 20.sp
             )
         }
 
         Button(
             onClick = onSaveClick,
+            enabled = total != 0.0,
             modifier = Modifier
                 .fillMaxWidth()
                 .height(52.dp),
@@ -150,7 +154,7 @@ fun CartFooter(
         ) {
             Icon(Icons.Default.Check, contentDescription = null)
             Spacer(Modifier.width(8.dp))
-            Text("Guardar carrito")
+            Text("Guardar carrito", color = Color.White)
         }
     }
 }
@@ -210,7 +214,7 @@ fun ConfirmProductDialog(
                     pressedElevation = 12.dp
                 )
             ) {
-                Text("Aceptar")
+                Text("Confirmar producto", color = Color.White)
             }
         },
         dismissButton = {

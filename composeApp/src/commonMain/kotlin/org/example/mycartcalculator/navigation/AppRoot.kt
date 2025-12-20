@@ -29,8 +29,8 @@ fun AppRoot(
 
     val bottomTabs = remember {
         listOf(
-            BottomTab(cartTab, "Carrito", Icons.Default.ShoppingCart, ),
             BottomTab(historyTab, "Historial", Icons.Default.History),
+            BottomTab(cartTab, "Carrito", Icons.Default.ShoppingCart, ),
             BottomTab(settingsTab, "Ajustes", Icons.Default.Settings, )
         )
     }
