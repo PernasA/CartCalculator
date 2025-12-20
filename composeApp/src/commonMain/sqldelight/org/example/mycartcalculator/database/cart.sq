@@ -1,0 +1,37 @@
+CREATE TABLE cart (
+id TEXT NOT NULL PRIMARY KEY,
+created_at INTEGER NOT NULL,
+total REAL NOT NULL
+);
+
+CREATE TABLE cart_item (
+id TEXT NOT NULL PRIMARY KEY,
+cart_id TEXT NOT NULL,
+name TEXT NOT NULL,
+price REAL NOT NULL,
+quantity INTEGER NOT NULL,
+FOREIGN KEY(cart_id) REFERENCES cart(id)
+);
+
+selectAllCarts:
+SELECT * FROM cart ORDER BY created_at DESC;
+
+selectItemsByCart:
+SELECT * FROM cart_item WHERE cart_id = ?;
+
+
+insertCart:
+INSERT INTO cart(
+    id,
+    created_at,
+    total
+) VALUES (?, ?, ?);
+
+insertCartItem:
+INSERT INTO cart_item(
+    id,
+    cart_id,
+    name,
+    price,
+    quantity
+) VALUES (?, ?, ?, ?, ?);

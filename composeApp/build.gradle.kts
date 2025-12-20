@@ -5,6 +5,7 @@ plugins {
     alias(libs.plugins.androidApplication)
     alias(libs.plugins.composeMultiplatform)
     alias(libs.plugins.composeCompiler)
+    alias(libs.plugins.sqldelight)
 }
 
 kotlin {
@@ -36,6 +37,8 @@ kotlin {
             // Koin
             implementation(libs.koin.android)
             implementation(libs.koin.compose)
+
+            implementation(libs.sqldelight.android.driver)
         }
         commonMain.dependencies {
             implementation(compose.runtime)
@@ -54,9 +57,23 @@ kotlin {
             implementation(libs.voyager.tab.navigator)
 
             implementation(libs.koin.core)
+
+            implementation(libs.sqldelight.runtime)
         }
         commonTest.dependencies {
             implementation(libs.kotlin.test)
+        }
+
+        iosMain.dependencies {
+            implementation(libs.sqldelight.native.driver)
+        }
+    }
+}
+
+sqldelight {
+    databases {
+        create("CartDatabase") {
+            packageName.set("org.example.mycartcalculator.database")
         }
     }
 }

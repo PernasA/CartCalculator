@@ -12,9 +12,11 @@ import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import org.example.mycartcalculator.domain.model.mlkit.Cart
 import org.example.mycartcalculator.domain.model.product.Product
 import org.example.mycartcalculator.domain.usecase.ParseReceiptUseCase
 import org.example.mycartcalculator.domain.usecase.RecognizeTextUseCase
+import org.example.mycartcalculator.domain.usecase.SaveCartUseCase
 import org.example.mycartcalculator.expect.ImageData
 import org.example.mycartcalculator.view.effect.CartEffect
 import org.example.mycartcalculator.view.intent.CartIntent
@@ -22,7 +24,8 @@ import org.example.mycartcalculator.view.state.CartState
 
 class CartViewModel(
     private val recognizeTextUseCase: RecognizeTextUseCase,
-    private val parseReceiptUseCase: ParseReceiptUseCase
+    private val parseReceiptUseCase: ParseReceiptUseCase,
+    private val saveCartUseCase: SaveCartUseCase
 ) {
 
     private val scope = CoroutineScope(SupervisorJob() + Dispatchers.Main)
@@ -35,18 +38,16 @@ class CartViewModel(
 
     fun onIntent(intent: CartIntent) {
         when (intent) {
-            CartIntent.OnScanReceiptClicked -> openCamera()
+            CartIntent.OnScanReceiptClicked -> emitEffect(CartEffect.OpenCamera)
             is CartIntent.OnImageCaptured -> processImage(intent.imageData)
             is CartIntent.OnConfirmProduct -> confirmProduct(intent.product)
             is CartIntent.IncreaseQuantity -> increaseQuantity(intent.product)
             is CartIntent.DecreaseQuantity -> decreaseQuantity(intent.product)
-            CartIntent.OnCancelProduct -> cancelProduct()
-            CartIntent.OnSaveCartClicked -> openDialogSaveCart()
+            is CartIntent.OnCancelProduct -> cancelProduct()
+            is CartIntent.OnSaveCartClicked -> emitEffect(CartEffect.OpenDialogSaveCart)
+            is CartIntent.OnConfirmSaveCart -> saveCart()
+            is CartIntent.OnCancelSaveCart -> emitEffect(CartEffect.CloseDialogSaveCart)
         }
-    }
-
-    private fun openCamera() {
-        emitEffect(CartEffect.OpenCamera)
     }
 
     private fun processImage(imageData: ImageData) {
@@ -105,8 +106,14 @@ class CartViewModel(
         }
     }
 
-    private fun openDialogSaveCart() {
-        emitEffect(CartEffect.ShowError("Funcionalidad no implementada"))
+    private fun saveCart() {
+        scope.launch {
+            saveCartUseCase(state.value.cart)
+            updateState {
+                copy(cart = Cart())
+            }
+            emitEffect(CartEffect.CloseDialogSaveCart)
+        }
     }
 
     private fun updateState(reducer: CartState.() -> CartState) {

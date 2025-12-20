@@ -7,6 +7,10 @@ import androidx.activity.result.launch
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.platform.LocalContext
 import org.example.mycartcalculator.expect.ImageData
 import org.example.mycartcalculator.view.effect.CartEffect
@@ -30,6 +34,7 @@ fun CartScreenHostAndroid(
                 )
             }
         }
+    var showSaveDialog by remember { mutableStateOf(false) }
 
     LaunchedEffect(Unit) {
         cartViewModel.effect.collect { effect ->
@@ -41,8 +46,21 @@ fun CartScreenHostAndroid(
                         effect.message,
                         Toast.LENGTH_LONG
                     ).show()
+                CartEffect.OpenDialogSaveCart -> showSaveDialog = true
+                CartEffect.CloseDialogSaveCart -> showSaveDialog = false
             }
         }
+    }
+
+    if (showSaveDialog) {
+        SaveCartDialog(
+            onConfirm = {
+                cartViewModel.onIntent(CartIntent.OnConfirmSaveCart)
+            },
+            onCancel = {
+                cartViewModel.onIntent(CartIntent.OnCancelSaveCart)
+            }
+        )
     }
 
     CartScreen(

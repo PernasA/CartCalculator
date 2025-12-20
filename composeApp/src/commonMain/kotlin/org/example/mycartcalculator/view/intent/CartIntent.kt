@@ -11,4 +11,6 @@ sealed interface CartIntent {
     data class DecreaseQuantity(val product: Product) : CartIntent
     data object OnCancelProduct : CartIntent
     data object OnSaveCartClicked : CartIntent
+    data object OnConfirmSaveCart: CartIntent
+    data object OnCancelSaveCart: CartIntent
 }
