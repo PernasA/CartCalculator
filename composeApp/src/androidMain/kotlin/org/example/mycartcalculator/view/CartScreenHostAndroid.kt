@@ -43,12 +43,6 @@ fun CartScreenHostAndroid(
         cartViewModel.effect.collect { effect ->
             when (effect) {
                 CartEffect.OpenCamera -> cameraLauncher.launch()
-                is CartEffect.ShowError -> {
-                    snackbarHostState.showSnackbar(
-                        message = effect.message,
-                        duration = SnackbarDuration.Long
-                    )
-                }
                 CartEffect.OpenDialogSaveCart -> showSaveDialog = true
                 CartEffect.CloseDialogSaveCart -> showSaveDialog = false
             }
@@ -85,6 +79,9 @@ fun CartScreenHostAndroid(
         },
         onSaveCartClicked = {
             cartViewModel.onIntent(CartIntent.OnSaveCartClicked)
+        },
+        onDismissError = {
+            cartViewModel.onErrorShown()
         }
     )
 }

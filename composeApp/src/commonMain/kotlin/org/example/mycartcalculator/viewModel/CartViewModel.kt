@@ -33,6 +33,7 @@ class CartViewModel(
     val effect: SharedFlow<CartEffect> = _effect.asSharedFlow()
 
     fun onIntent(intent: CartIntent) {
+        println("Received intent: $intent")
         when (intent) {
             CartIntent.OnScanReceiptClicked -> emitEffect(CartEffect.OpenCamera)
             is CartIntent.OnImageCaptured -> processImage(intent.imageData)
@@ -52,6 +53,7 @@ class CartViewModel(
 
             runCatching {
                 val recognizedText = recognizeTextUseCase(imageData)
+                println("Recognized text: ${recognizedText.fullText}")
 
                 if (recognizedText.fullText.isBlank()) {
                     error("No se detectó texto en el ticket")
@@ -67,6 +69,7 @@ class CartViewModel(
 
                 items.map { Product(it.name, it.price) }
             }.onSuccess { products ->
+                println("Parsed products onSuccess: $products")
                 updateState {
                     copy(
                         isLoading = false,
@@ -74,12 +77,13 @@ class CartViewModel(
                     )
                 }
             }.onFailure { e ->
-                updateState { copy(isLoading = false) }
-                emitEffect(
-                    CartEffect.ShowError(
-                        e.message ?: "Error procesando el ticket"
+                println("Error processing image: ${e.message}")
+                updateState {
+                    copy(
+                        isLoading = false,
+                        errorMessage = e.message ?: "Error procesando el ticket"
                     )
-                )
+                }
             }
         }
     }
@@ -149,4 +153,9 @@ class CartViewModel(
     private fun cancelProduct() {
         updateState { copy(pendingProduct = null) }
     }
+
+    fun onErrorShown() {
+        updateState { copy(errorMessage = null) }
+    }
+
 }
