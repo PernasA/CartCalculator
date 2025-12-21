@@ -1,4 +1,4 @@
-package org.example.mycartcalculator.view.screen
+package org.example.mycartcalculator.view.dialogs
 
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.MaterialTheme
@@ -40,3 +40,4 @@ fun CloseAppDialog(
         }
     )
 }
+

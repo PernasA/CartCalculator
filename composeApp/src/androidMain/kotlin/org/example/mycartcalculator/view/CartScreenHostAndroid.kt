@@ -4,6 +4,8 @@ import android.widget.Toast
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.result.launch
+import androidx.compose.material3.SnackbarDuration
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -13,6 +15,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.platform.LocalContext
 import org.example.mycartcalculator.expect.ImageData
+import org.example.mycartcalculator.view.dialogs.SaveCartDialog
 import org.example.mycartcalculator.view.effect.CartEffect
 import org.example.mycartcalculator.view.intent.CartIntent
 import org.example.mycartcalculator.view.screen.CartScreen
@@ -22,7 +25,7 @@ import org.example.mycartcalculator.viewModel.CartViewModel
 fun CartScreenHostAndroid(
     cartViewModel: CartViewModel
 ) {
-    val context = LocalContext.current
+    val snackbarHostState = remember { SnackbarHostState() }
 
     val cameraLauncher =
         rememberLauncherForActivityResult(
@@ -40,12 +43,12 @@ fun CartScreenHostAndroid(
         cartViewModel.effect.collect { effect ->
             when (effect) {
                 CartEffect.OpenCamera -> cameraLauncher.launch()
-                is CartEffect.ShowError ->
-                    Toast.makeText(
-                        context,
-                        effect.message,
-                        Toast.LENGTH_LONG
-                    ).show()
+                is CartEffect.ShowError -> {
+                    snackbarHostState.showSnackbar(
+                        message = effect.message,
+                        duration = SnackbarDuration.Long
+                    )
+                }
                 CartEffect.OpenDialogSaveCart -> showSaveDialog = true
                 CartEffect.CloseDialogSaveCart -> showSaveDialog = false
             }

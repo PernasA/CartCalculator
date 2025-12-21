@@ -1,9 +1,7 @@
 package org.example.mycartcalculator.viewModel
 
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.SupervisorJob
-import kotlinx.coroutines.cancel
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharedFlow
@@ -26,9 +24,7 @@ class CartViewModel(
     private val recognizeTextUseCase: RecognizeTextUseCase,
     private val parseReceiptUseCase: ParseReceiptUseCase,
     private val saveCartUseCase: SaveCartUseCase
-) {
-
-    private val scope = CoroutineScope(SupervisorJob() + Dispatchers.Main)
+): ViewModel() {
 
     private val _state = MutableStateFlow(CartState())
     val state: StateFlow<CartState> = _state.asStateFlow()
@@ -51,26 +47,43 @@ class CartViewModel(
     }
 
     private fun processImage(imageData: ImageData) {
-        scope.launch {
+        viewModelScope.launch {
             updateState { copy(isLoading = true) }
 
             runCatching {
                 val recognizedText = recognizeTextUseCase(imageData)
-                parseReceiptUseCase(recognizedText)
-                    .map { Product(it.name, it.price) }
+
+                if (recognizedText.fullText.isBlank()) {
+                    error("No se detectó texto en el ticket")
+                }
+
+                val items = parseReceiptUseCase(recognizedText)
+
+                if (items.isEmpty()) {
+                    throw IllegalStateException(
+                        "No se detectaron productos válidos en el ticket"
+                    )
+                }
+
+                items.map { Product(it.name, it.price) }
             }.onSuccess { products ->
                 updateState {
                     copy(
                         isLoading = false,
-                        pendingProduct = products.firstOrNull()
+                        pendingProduct = products.first()
                     )
                 }
-            }.onFailure {
+            }.onFailure { e ->
                 updateState { copy(isLoading = false) }
-                emitEffect(CartEffect.ShowError("Error procesando el ticket"))
+                emitEffect(
+                    CartEffect.ShowError(
+                        e.message ?: "Error procesando el ticket"
+                    )
+                )
             }
         }
     }
+
 
     private fun increaseQuantity(product: Product) {
         updateState {
@@ -107,7 +120,7 @@ class CartViewModel(
     }
 
     private fun saveCart() {
-        scope.launch {
+        viewModelScope.launch {
             saveCartUseCase(state.value.cart)
             updateState {
                 copy(cart = Cart())
@@ -121,7 +134,7 @@ class CartViewModel(
     }
 
     private fun emitEffect(effect: CartEffect) {
-        scope.launch { _effect.emit(effect) }
+        viewModelScope.launch { _effect.emit(effect) }
     }
 
     private fun confirmProduct(product: Product) {
@@ -135,9 +148,5 @@ class CartViewModel(
 
     private fun cancelProduct() {
         updateState { copy(pendingProduct = null) }
-    }
-
-    fun clear() {
-        scope.cancel()
     }
 }

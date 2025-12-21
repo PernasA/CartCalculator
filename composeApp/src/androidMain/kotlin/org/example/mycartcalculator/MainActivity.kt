@@ -5,7 +5,6 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.BackHandler
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -18,13 +17,14 @@ import org.example.mycartcalculator.di.commonModule
 import org.example.mycartcalculator.navigation.AppRoot
 import org.example.mycartcalculator.navigation.CartTab
 import org.example.mycartcalculator.view.AppTheme
-import org.example.mycartcalculator.view.screen.CloseAppDialog
+import org.example.mycartcalculator.view.dialogs.CloseAppDialog
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.context.GlobalContext.startKoin
 
 class MainActivity : ComponentActivity() {
 
     private var tabNavigator: TabNavigator? = null
+    private var cartTab: CartTab? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -41,17 +41,18 @@ class MainActivity : ComponentActivity() {
                 var showCloseDialog by remember { mutableStateOf(false) }
 
                 AppRoot(
-                    onTabNavigatorReady = { navigator ->
+                    onTabNavigatorReady = { navigator, cart ->
                         tabNavigator = navigator
+                        cartTab = cart
                     }
                 )
 
                 BackHandler {
                     tabNavigator?.let { navigator ->
-                        val cartTab = navigator.current
-                        if (navigator.current !is CartTab) {
-                            // volvemos SIEMPRE al cart
-                            navigator.current = cartTab
+                        val cart = cartTab ?: return@BackHandler
+
+                        if (navigator.current != cart) {
+                            navigator.current = cart
                         } else {
                             showCloseDialog = true
                         }

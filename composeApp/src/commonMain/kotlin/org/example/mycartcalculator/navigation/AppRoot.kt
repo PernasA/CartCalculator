@@ -21,7 +21,7 @@ import org.koin.mp.KoinPlatform.getKoin
 
 @Composable
 fun AppRoot(
-    onTabNavigatorReady: (TabNavigator) -> Unit
+    onTabNavigatorReady: (TabNavigator, CartTab) -> Unit
 ) {
     val cartTab = remember { CartTab() }
     val historyTab = remember { HistoryTab() }
@@ -41,7 +41,7 @@ fun AppRoot(
         LocalCartViewModel provides cartViewModel
     ) {
         TabNavigator(cartTab) { tabNavigator ->
-            onTabNavigatorReady(tabNavigator)
+            onTabNavigatorReady(tabNavigator, cartTab)
 
             Scaffold(
                 bottomBar = {

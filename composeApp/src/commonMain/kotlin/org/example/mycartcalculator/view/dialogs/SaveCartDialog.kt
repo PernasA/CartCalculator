@@ -1,4 +1,4 @@
-package org.example.mycartcalculator.view
+package org.example.mycartcalculator.view.dialogs
 
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Save
