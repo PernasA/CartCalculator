@@ -21,6 +21,7 @@ class CartRepository(
         queries.transaction {
             queries.insertCart(
                 id = cartId.toString(),
+                name = cart.name,
                 created_at = now,
                 total = cart.total
             )

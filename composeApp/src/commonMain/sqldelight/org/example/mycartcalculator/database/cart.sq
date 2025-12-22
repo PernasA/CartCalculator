@@ -1,7 +1,8 @@
 CREATE TABLE cart (
-id TEXT NOT NULL PRIMARY KEY,
-created_at INTEGER NOT NULL,
-total REAL NOT NULL
+    id TEXT NOT NULL PRIMARY KEY,
+    name TEXT NOT NULL,
+    created_at INTEGER NOT NULL,
+    total REAL NOT NULL
 );
 
 CREATE TABLE cart_item (
@@ -23,9 +24,10 @@ SELECT * FROM cart_item WHERE cart_id = ?;
 insertCart:
 INSERT INTO cart(
     id,
+    name,
     created_at,
     total
-) VALUES (?, ?, ?);
+) VALUES (?, ?, ?, ?);
 
 insertCartItem:
 INSERT INTO cart_item(

@@ -42,7 +42,7 @@ class CartViewModel(
             is CartIntent.DecreaseQuantity -> decreaseQuantity(intent.product)
             is CartIntent.OnCancelProduct -> cancelProduct()
             is CartIntent.OnSaveCartClicked -> emitEffect(CartEffect.OpenDialogSaveCart)
-            is CartIntent.OnConfirmSaveCart -> saveCart()
+            is CartIntent.OnConfirmSaveCart -> saveCart(intent.name)
             is CartIntent.OnCancelSaveCart -> emitEffect(CartEffect.CloseDialogSaveCart)
         }
     }
@@ -123,9 +123,9 @@ class CartViewModel(
         }
     }
 
-    private fun saveCart() {
+    private fun saveCart(name: String) {
         viewModelScope.launch {
-            saveCartUseCase(state.value.cart)
+            saveCartUseCase(state.value.cart.copy(name = name))
             updateState {
                 copy(cart = Cart())
             }

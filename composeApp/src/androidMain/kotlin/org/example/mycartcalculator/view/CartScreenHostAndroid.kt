@@ -52,7 +52,7 @@ fun CartScreenHostAndroid(
     if (showSaveDialog) {
         SaveCartDialog(
             onConfirm = {
-                cartViewModel.onIntent(CartIntent.OnConfirmSaveCart)
+                cartViewModel.onIntent(CartIntent.OnConfirmSaveCart(it))
             },
             onCancel = {
                 cartViewModel.onIntent(CartIntent.OnCancelSaveCart)
