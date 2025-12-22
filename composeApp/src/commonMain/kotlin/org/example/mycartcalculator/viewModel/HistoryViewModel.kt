@@ -26,9 +26,11 @@ class HistoryViewModel(
         loadHistory()
     }
 
-    private fun loadHistory() {
+    fun loadHistory() {
         viewModelScope.launch {
+            println("Loading cart history...")
             val carts = getHistoryUseCase()
+            println("Loaded carts from history: $carts")
             _state.update {
                 it.copy(
                     carts = carts,
