@@ -14,13 +14,15 @@ import androidx.compose.ui.Modifier
 
 import cafe.adriel.voyager.navigator.tab.CurrentTab
 import cafe.adriel.voyager.navigator.tab.TabNavigator
-import org.example.mycartcalculator.di.LocalCartViewModel
+import org.example.mycartcalculator.di.ProvidedCartViewModel
+import org.example.mycartcalculator.di.ProvidedHistoryViewModel
 import org.example.mycartcalculator.view.BottomNavigationBar
 import org.example.mycartcalculator.viewModel.CartViewModel
+import org.example.mycartcalculator.viewModel.HistoryViewModel
 import org.koin.mp.KoinPlatform.getKoin
 
 @Composable
-fun AppRoot(
+fun AppRootNavigation(
     onTabNavigatorReady: (TabNavigator, CartTab) -> Unit
 ) {
     val cartTab = remember { CartTab() }
@@ -36,9 +38,11 @@ fun AppRoot(
     }
 
     val cartViewModel: CartViewModel = getKoin().get()
+    val historyViewModel: HistoryViewModel = getKoin().get()
 
     CompositionLocalProvider(
-        LocalCartViewModel provides cartViewModel
+        ProvidedCartViewModel provides cartViewModel,
+        ProvidedHistoryViewModel provides historyViewModel
     ) {
         TabNavigator(cartTab) { tabNavigator ->
             onTabNavigatorReady(tabNavigator, cartTab)

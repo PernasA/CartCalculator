@@ -1,5 +1,6 @@
 package org.example.mycartcalculator.view.screen
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -13,7 +14,6 @@ import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
@@ -22,9 +22,14 @@ import org.example.mycartcalculator.util.formatDate
 import org.example.mycartcalculator.util.formatPrice
 
 @Composable
-fun HistoryRow(cart: CartHistoryItem) {
+fun HistoryRow(
+    cart: CartHistoryItem,
+    onClick: () -> Unit
+) {
     Card(
-        modifier = Modifier.fillMaxWidth(),
+        modifier = Modifier
+            .fillMaxWidth()
+            .clickable(onClick = onClick),
         shape = RoundedCornerShape(16.dp),
         elevation = CardDefaults.cardElevation(2.dp)
     ) {
@@ -41,9 +46,8 @@ fun HistoryRow(cart: CartHistoryItem) {
             )
             Spacer(Modifier.height(8.dp))
             Row(
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.SpaceBetween,
-                modifier = Modifier.fillMaxWidth()
+                Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween
             ) {
                 Text(
                     text = cart.total.formatPrice(),

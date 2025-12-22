@@ -14,7 +14,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import cafe.adriel.voyager.navigator.tab.TabNavigator
 import org.example.mycartcalculator.di.androidModule
 import org.example.mycartcalculator.di.commonModule
-import org.example.mycartcalculator.navigation.AppRoot
+import org.example.mycartcalculator.navigation.AppRootNavigation
 import org.example.mycartcalculator.navigation.CartTab
 import org.example.mycartcalculator.view.AppTheme
 import org.example.mycartcalculator.view.dialogs.CloseAppDialog
@@ -40,7 +40,7 @@ class MainActivity : ComponentActivity() {
 
                 var showCloseDialog by remember { mutableStateOf(false) }
 
-                AppRoot(
+                AppRootNavigation(
                     onTabNavigatorReady = { navigator, cart ->
                         tabNavigator = navigator
                         cartTab = cart

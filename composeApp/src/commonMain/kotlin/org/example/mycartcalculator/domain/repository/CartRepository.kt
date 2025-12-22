@@ -1,6 +1,7 @@
 package org.example.mycartcalculator.domain.repository
 
 import org.example.mycartcalculator.database.CartDatabase
+import org.example.mycartcalculator.domain.model.CartHistoryItem
 import org.example.mycartcalculator.domain.model.mlkit.Cart
 import kotlin.time.Clock
 import kotlin.time.ExperimentalTime
@@ -37,4 +38,22 @@ class CartRepository(
             }
         }
     }
+
+    fun getHistory(): List<CartHistoryItem> {
+        return queries.selectAllCarts()
+            .executeAsList()
+            .map { cart ->
+                CartHistoryItem(
+                    id = cart.id,
+                    name = cart.name,
+                    date = cart.created_at,
+                    total = cart.total,
+                    itemsCount = queries
+                        .selectItemsByCart(cart.id)
+                        .executeAsList()
+                        .sumOf { it.quantity.toInt() }
+                )
+            }
+    }
+
 }

@@ -9,7 +9,7 @@ import org.koin.dsl.module
 val androidModule = module {
 
     single<TextRecognitionRepository> {
-        MlKitTextRecognitionRepository(androidContext())
+        MlKitTextRecognitionRepository()
     }
     single {
         DatabaseDriverFactory(androidContext()).createDriver()

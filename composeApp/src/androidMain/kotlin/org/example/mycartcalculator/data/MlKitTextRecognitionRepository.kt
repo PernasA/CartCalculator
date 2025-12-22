@@ -1,6 +1,5 @@
 package org.example.mycartcalculator.data
 
-import android.content.Context
 import com.google.mlkit.vision.common.InputImage
 import com.google.mlkit.vision.text.TextRecognition
 import com.google.mlkit.vision.text.latin.TextRecognizerOptions
@@ -13,9 +12,7 @@ import org.example.mycartcalculator.expect.ImageData
 import kotlin.coroutines.resume
 import kotlin.coroutines.resumeWithException
 
-class MlKitTextRecognitionRepository(
-    private val context: Context
-) : TextRecognitionRepository {
+class MlKitTextRecognitionRepository : TextRecognitionRepository {
 
     override suspend fun recognizeText(imageData: ImageData): RecognizedText =
         suspendCancellableCoroutine { cont ->

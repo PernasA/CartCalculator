@@ -7,7 +7,7 @@ import androidx.compose.ui.graphics.vector.rememberVectorPainter
 import org.example.mycartcalculator.expect.CartScreenPlatform
 import cafe.adriel.voyager.navigator.tab.Tab
 import cafe.adriel.voyager.navigator.tab.TabOptions
-import org.example.mycartcalculator.di.LocalCartViewModel
+import org.example.mycartcalculator.di.ProvidedCartViewModel
 
 class CartTab: Tab {
 
@@ -23,7 +23,7 @@ class CartTab: Tab {
 
     @Composable
     override fun Content() {
-        val cartViewModel = LocalCartViewModel.current
+        val cartViewModel = ProvidedCartViewModel.current
         CartScreenPlatform(cartViewModel = cartViewModel)
     }
 }

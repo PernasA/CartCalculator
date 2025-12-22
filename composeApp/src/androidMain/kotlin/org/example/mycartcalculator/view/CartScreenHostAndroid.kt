@@ -1,10 +1,8 @@
 package org.example.mycartcalculator.view
 
-import android.widget.Toast
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.result.launch
-import androidx.compose.material3.SnackbarDuration
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -13,7 +11,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
-import androidx.compose.ui.platform.LocalContext
 import org.example.mycartcalculator.expect.ImageData
 import org.example.mycartcalculator.view.dialogs.SaveCartDialog
 import org.example.mycartcalculator.view.effect.CartEffect
@@ -25,7 +22,7 @@ import org.example.mycartcalculator.viewModel.CartViewModel
 fun CartScreenHostAndroid(
     cartViewModel: CartViewModel
 ) {
-    val snackbarHostState = remember { SnackbarHostState() }
+    remember { SnackbarHostState() }
 
     val cameraLauncher =
         rememberLauncherForActivityResult(
