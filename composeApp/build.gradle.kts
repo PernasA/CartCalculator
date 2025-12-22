@@ -57,8 +57,8 @@ kotlin {
             implementation(libs.voyager.tab.navigator)
 
             implementation(libs.koin.core)
-
             implementation(libs.sqldelight.runtime)
+            implementation(libs.androidx.datetime)
         }
         commonTest.dependencies {
             implementation(libs.kotlin.test)

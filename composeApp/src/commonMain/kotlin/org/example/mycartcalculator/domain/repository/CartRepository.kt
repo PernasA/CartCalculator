@@ -8,7 +8,7 @@ import kotlin.uuid.ExperimentalUuidApi
 import kotlin.uuid.Uuid
 
 class CartRepository(
-    private val database: CartDatabase
+    database: CartDatabase
 ) {
 
     private val queries = database.cartQueries
