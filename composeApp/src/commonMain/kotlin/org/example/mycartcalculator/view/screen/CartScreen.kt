@@ -37,6 +37,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import org.example.mycartcalculator.domain.model.product.Product
 import org.example.mycartcalculator.util.formatPrice
+import org.example.mycartcalculator.view.dialogs.AnimatedUpArrow
 import org.example.mycartcalculator.view.dialogs.ConfirmProductDialog
 import org.example.mycartcalculator.view.dialogs.ThinkingOverlay
 import org.example.mycartcalculator.view.state.CartState
@@ -208,15 +209,22 @@ fun CartFooter(
 
 @Composable
 fun EmptyCart(modifier: Modifier) {
-    Box(
+    Column(
         modifier = modifier
             .fillMaxWidth()
             .padding(top = 32.dp),
-        contentAlignment = Alignment.Center
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.Center
     ) {
+        AnimatedUpArrow()
+
+        Spacer(modifier = Modifier.height(8.dp))
+
         Text(
             text = "No hay productos cargados",
-            style = MaterialTheme.typography.bodyMedium
+            style = MaterialTheme.typography.bodyMedium,
+            fontSize = 17.sp
         )
     }
 }
+
