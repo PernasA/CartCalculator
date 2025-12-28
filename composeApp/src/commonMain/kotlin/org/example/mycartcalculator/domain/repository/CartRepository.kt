@@ -48,10 +48,7 @@ class CartRepository(
                     name = cart.name,
                     date = cart.created_at,
                     total = cart.total,
-                    itemsCount = queries
-                        .selectItemsByCart(cart.id)
-                        .executeAsList()
-                        .sumOf { it.quantity.toInt() }
+                    items = queries.selectItemsByCart(cart.id).executeAsList()
                 )
             }
     }

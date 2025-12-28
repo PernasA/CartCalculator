@@ -49,7 +49,7 @@ fun HistoryRow(
                 )
                 Spacer(Modifier.height(8.dp))
                 Text(
-                    text = "Cant productos: ${cart.itemsCount}",
+                    text = "Cant productos: ${cart.itemsCount()}",
                     style = MaterialTheme.typography.bodySmall
                 )
             }

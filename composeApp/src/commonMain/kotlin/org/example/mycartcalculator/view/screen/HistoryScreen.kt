@@ -17,44 +17,44 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
-import org.example.mycartcalculator.view.state.HistoryState
+import org.example.mycartcalculator.viewModel.HistoryViewModel
 
-class HistoryScreen : Screen {
+class HistoryScreen(
+    private val historyViewModel: HistoryViewModel
+) : Screen {
 
     @Composable
     override fun Content() {
+        val state by historyViewModel.state.collectAsState()
+        val navigator = LocalNavigator.currentOrThrow
 
-    }
-}
+        Column(Modifier.fillMaxSize()) {
+            HistoryHeader()
 
-@Composable
-fun HistoryScreen(
-    state: HistoryState
-) {
-    val navigator = LocalNavigator.currentOrThrow
-    Column (Modifier.fillMaxSize()) {
-        HistoryHeader()
-
-        LazyColumn {
-            items(state.carts) { cart ->
-                HistoryRow(
-                    cart = cart,
-                    onClick = {
-//                        navigator.push(
-//                            CartDetailScreen(cart.id)
-//                        )
-                    }
-                )
+            LazyColumn {
+                items(state.carts) { cart ->
+                    HistoryRow(
+                        cart = cart,
+                        onClick = {
+                            navigator.push(
+                                CartDetailScreen(cart)
+                            )
+                        }
+                    )
+                }
             }
         }
     }
 }
+
 
 @Composable
 fun HistoryHeader() {
