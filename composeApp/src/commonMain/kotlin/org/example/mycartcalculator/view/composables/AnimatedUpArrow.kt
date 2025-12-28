@@ -1,4 +1,4 @@
-package org.example.mycartcalculator.view.dialogs
+package org.example.mycartcalculator.view.composables
 
 import androidx.compose.animation.core.FastOutSlowInEasing
 import androidx.compose.animation.core.RepeatMode
@@ -9,10 +9,6 @@ import androidx.compose.animation.core.tween
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowCircleUp
-import androidx.compose.material.icons.filled.ArrowDropUp
-import androidx.compose.material.icons.filled.ArrowUpward
-import androidx.compose.material.icons.filled.KeyboardArrowUp
 import androidx.compose.material.icons.filled.KeyboardDoubleArrowUp
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme

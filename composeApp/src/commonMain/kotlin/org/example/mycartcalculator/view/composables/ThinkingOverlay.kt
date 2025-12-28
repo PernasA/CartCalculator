@@ -1,4 +1,4 @@
-package org.example.mycartcalculator.view.dialogs
+package org.example.mycartcalculator.view.composables
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box

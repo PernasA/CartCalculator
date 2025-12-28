@@ -26,7 +26,6 @@ import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -37,9 +36,9 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import org.example.mycartcalculator.domain.model.product.Product
 import org.example.mycartcalculator.util.formatPrice
-import org.example.mycartcalculator.view.dialogs.AnimatedUpArrow
+import org.example.mycartcalculator.view.composables.AnimatedUpArrow
 import org.example.mycartcalculator.view.dialogs.ConfirmProductDialog
-import org.example.mycartcalculator.view.dialogs.ThinkingOverlay
+import org.example.mycartcalculator.view.composables.ThinkingOverlay
 import org.example.mycartcalculator.view.state.CartState
 
 @Composable
