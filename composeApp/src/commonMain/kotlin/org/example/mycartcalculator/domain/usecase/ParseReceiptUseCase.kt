@@ -4,6 +4,8 @@ import org.example.mycartcalculator.domain.model.ReceiptItem
 import org.example.mycartcalculator.domain.model.mlkit.RecognizedText
 
 class ParseReceiptUseCase {
+    private val inlinePriceRegex =
+        Regex("""(?:^|\s)(\$?\d{1,6}(?:[.,]\d{3})*(?:[.,]\d{2})?)$""")
 
     operator fun invoke(recognizedText: RecognizedText): List<ReceiptItem> {
 
@@ -46,25 +48,25 @@ class ParseReceiptUseCase {
         }
 
     private fun extractFromInlineText(lines: List<String>): ReceiptItem? {
-
         for (line in lines) {
-            val priceMatch = extractPrice(line) ?: continue
+            val priceMatch = inlinePriceRegex.find(line) ?: continue
+            val price = extractPrice(priceMatch.value) ?: continue
 
             val name = line
-                .replace(priceMatch.raw, "")
-                .replace("$", "")
+                .removeSuffix(priceMatch.value)
                 .trim()
 
-            if (isValidName(name)) {
-                return ReceiptItem(
-                    name = name,
-                    price = priceMatch.value
-                )
-            }
-        }
+            if (!isValidName(name)) continue
 
+            return ReceiptItem(
+                name = name,
+                price = price.value
+            )
+        }
         return null
     }
+
+
 
     private fun findClosestName(lines: List<String>, priceIndex: Int): String? {
         for (i in priceIndex - 1 downTo maxOf(priceIndex - 3, 0)) {
@@ -93,7 +95,7 @@ class ParseReceiptUseCase {
         if (blacklist.any { normalized.contains(it) }) return false
 
         // discard price-like names
-        if (isPriceCandidate(clean)) return false
+        if (clean.matches(Regex("""\d+[.,]?\d*"""))) return false
 
         val letters = clean.count { it.isLetter() }
         if (letters < 2) return false
@@ -106,24 +108,46 @@ class ParseReceiptUseCase {
 
 
     private fun isPriceCandidate(text: String): Boolean {
-        return text.contains("$") || text.count { it.isDigit() } >= 2
+        return extractPrice(text) != null
     }
 
     private fun extractPrice(text: String): PriceMatch? {
-        val regex = Regex("""(\$?\s?\d{1,3}(\.\d{3})*(,\d{2})?)""")
+        val regex = Regex(
+            """(\$?\s?\d{1,6}(?:[.,]\d{3})*(?:[.,]\d{2})?)"""
+        )
+
         val match = regex.find(text) ?: return null
 
-        val value = match.value
-            .replace("$", "")
-            .replace(" ", "")
-            .replace(".", "")
-            .replace(",", ".")
-            .toDoubleOrNull() ?: return null
+        val normalized = normalizePrice(match.value)
+        val value = normalized.toDoubleOrNull() ?: return null
 
         return PriceMatch(
             raw = match.value,
             value = value
         )
+    }
+
+    private fun normalizePrice(raw: String): String {
+        val clean = raw
+            .replace("$", "")
+            .replace(" ", "")
+
+        return when {
+            // 1.250,50 → 1250.50
+            clean.contains(".") && clean.contains(",") ->
+                clean.replace(".", "").replace(",", ".")
+
+            // 1.250 → 1250
+            clean.contains(".") ->
+                clean.replace(".", "")
+
+            // 1250,50 → 1250.50
+            clean.contains(",") ->
+                clean.replace(",", ".")
+
+            // 1250
+            else -> clean
+        }
     }
 
 }

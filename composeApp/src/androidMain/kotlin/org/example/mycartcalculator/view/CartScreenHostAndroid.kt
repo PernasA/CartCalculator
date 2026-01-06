@@ -30,7 +30,7 @@ fun CartScreenHostAndroid(
         ) { bitmap ->
             bitmap?.let {
                 cartViewModel.onIntent(
-                    CartIntent.OnImageCaptured(ImageData(it))
+                    CartIntent.OnImageCaptured(ImageData().apply { this.bitmap = it})
                 )
             }
         }
