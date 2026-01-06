@@ -1,13 +1,12 @@
 package org.example.mycartcalculator.domain.usecase
 
 import org.example.mycartcalculator.domain.model.CartHistoryItem
-import org.example.mycartcalculator.domain.model.mlkit.Cart
-import org.example.mycartcalculator.domain.repository.CartRepository
+import org.example.mycartcalculator.domain.repository.ICartRepository
 
 class GetHistoryUseCase(
-    private val repository: CartRepository
+    private val repository: ICartRepository
 ) {
-    suspend operator fun invoke(): List<CartHistoryItem> {
+    operator fun invoke(): List<CartHistoryItem> {
         return repository.getHistory()
     }
 }

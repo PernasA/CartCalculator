@@ -10,12 +10,12 @@ import kotlin.uuid.Uuid
 
 class CartRepository(
     database: CartDatabase
-) {
+) : ICartRepository {
 
     private val queries = database.cartQueries
 
     @OptIn(ExperimentalTime::class, ExperimentalUuidApi::class)
-    fun saveCart(cart: Cart) {
+    override fun saveCart(cart: Cart) {
         val cartId = Uuid.random()
         val now = Clock.System.now().toEpochMilliseconds()
 
@@ -39,7 +39,7 @@ class CartRepository(
         }
     }
 
-    fun getHistory(): List<CartHistoryItem> {
+    override fun getHistory(): List<CartHistoryItem> {
         return queries.selectAllCarts()
             .executeAsList()
             .map { cart ->
