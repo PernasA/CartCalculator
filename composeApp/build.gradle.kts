@@ -66,6 +66,7 @@ kotlin {
             implementation(libs.kotlinx.coroutines.test)
             implementation(libs.mokkery)
             implementation(libs.turbine)
+            implementation(libs.junit)
         }
 
         iosMain.dependencies {

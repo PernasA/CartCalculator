@@ -12,18 +12,18 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import org.example.mycartcalculator.domain.model.mlkit.Cart
 import org.example.mycartcalculator.domain.model.product.Product
-import org.example.mycartcalculator.domain.usecase.ParseReceiptUseCase
-import org.example.mycartcalculator.domain.usecase.RecognizeTextUseCase
-import org.example.mycartcalculator.domain.usecase.SaveCartUseCase
+import org.example.mycartcalculator.domain.usecase.interfaces.IParseReceiptUseCase
+import org.example.mycartcalculator.domain.usecase.interfaces.IRecognizeTextUseCase
+import org.example.mycartcalculator.domain.usecase.interfaces.ISaveCartUseCase
 import org.example.mycartcalculator.expect.ImageData
 import org.example.mycartcalculator.view.effect.CartEffect
 import org.example.mycartcalculator.view.intent.CartIntent
 import org.example.mycartcalculator.view.state.CartState
 
 class CartViewModel(
-    private val recognizeTextUseCase: RecognizeTextUseCase,
-    private val parseReceiptUseCase: ParseReceiptUseCase,
-    private val saveCartUseCase: SaveCartUseCase
+    private val recognizeTextUseCase: IRecognizeTextUseCase,
+    private val parseReceiptUseCase: IParseReceiptUseCase,
+    private val saveCartUseCase: ISaveCartUseCase
 ): ViewModel() {
 
     private val _state = MutableStateFlow(CartState())

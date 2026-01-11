@@ -2,12 +2,13 @@ package org.example.mycartcalculator.domain.usecase
 
 import org.example.mycartcalculator.domain.model.ReceiptItem
 import org.example.mycartcalculator.domain.model.mlkit.RecognizedText
+import org.example.mycartcalculator.domain.usecase.interfaces.IParseReceiptUseCase
 
-class ParseReceiptUseCase {
+class ParseReceiptUseCase : IParseReceiptUseCase {
     private val inlinePriceRegex =
         Regex("""(?:^|\s)(\$?\d{1,6}(?:[.,]\d{3})*(?:[.,]\d{2})?)$""")
 
-    operator fun invoke(recognizedText: RecognizedText): List<ReceiptItem> {
+    override operator fun invoke(recognizedText: RecognizedText): List<ReceiptItem> {
 
         val lines = recognizedText.blocks
             .flatMap { it.lines }
