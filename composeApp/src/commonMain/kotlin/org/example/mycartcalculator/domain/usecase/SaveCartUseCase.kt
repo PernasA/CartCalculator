@@ -7,7 +7,7 @@ import org.example.mycartcalculator.domain.usecase.interfaces.ISaveCartUseCase
 class SaveCartUseCase(
     private val repository: ICartRepository
 ): ISaveCartUseCase {
-    override suspend fun invoke(cart: Cart) {
+    override fun invoke(cart: Cart) {
         repository.saveCart(cart)
     }
 }

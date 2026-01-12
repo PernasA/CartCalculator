@@ -7,7 +7,7 @@ import dev.mokkery.mock
 import kotlinx.coroutines.test.runTest
 import org.example.mycartcalculator.domain.model.mlkit.RecognizedText
 import org.example.mycartcalculator.domain.repository.TextRecognitionRepository
-import org.example.mycartcalculator.expect.ImageData
+import org.example.mycartcalculator.utils.fakeImageData
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertFailsWith
@@ -47,6 +47,6 @@ class RecognizeTextUseCaseTest {
         assertEquals("ML error", thrown.message)
     }
 
-    fun fakeImageData(): ImageData = ImageData()
+
 
 }

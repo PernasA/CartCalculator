@@ -1,4 +1,4 @@
-package org.example.mycartcalculator.util
+package org.example.mycartcalculator.fakes
 
 import org.example.mycartcalculator.domain.model.CartHistoryItem
 import org.example.mycartcalculator.domain.model.mlkit.Cart

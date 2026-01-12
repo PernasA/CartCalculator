@@ -13,7 +13,7 @@ import kotlinx.coroutines.test.runTest
 import kotlinx.coroutines.test.advanceUntilIdle
 import org.example.mycartcalculator.domain.model.CartHistoryItem
 import org.example.mycartcalculator.domain.usecase.GetHistoryUseCase
-import org.example.mycartcalculator.util.FakeCartRepository
+import org.example.mycartcalculator.fakes.FakeCartRepository
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import org.example.mycartcalculator.viewModel.HistoryViewModel
 
