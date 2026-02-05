@@ -40,6 +40,9 @@ kotlin {
             implementation(libs.koin.compose)
 
             implementation(libs.sqldelight.android.driver)
+
+            implementation(libs.androidx.work.runtime.ktx)
+            implementation(libs.ktor.client.okhttp)
         }
         commonMain.dependencies {
             implementation(compose.runtime)
@@ -59,7 +62,13 @@ kotlin {
 
             implementation(libs.koin.core)
             implementation(libs.sqldelight.runtime)
+            implementation(libs.sqldelight.coroutines.extensions)
             implementation(libs.androidx.datetime)
+
+            //Ktor
+            implementation(libs.ktor.client.core)
+            implementation(libs.ktor.client.content.negotiation)
+            implementation(libs.ktor.serialization.kotlinx.json)
         }
         commonTest.dependencies {
             implementation(libs.kotlin.test)

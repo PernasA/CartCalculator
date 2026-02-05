@@ -10,7 +10,7 @@ import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import org.example.mycartcalculator.domain.model.mlkit.Cart
+import org.example.mycartcalculator.domain.model.mlkit.newLocalCart
 import org.example.mycartcalculator.domain.model.product.Product
 import org.example.mycartcalculator.domain.usecase.interfaces.IParseReceiptUseCase
 import org.example.mycartcalculator.domain.usecase.interfaces.IRecognizeTextUseCase
@@ -127,7 +127,7 @@ class CartViewModel(
         viewModelScope.launch {
             saveCartUseCase(state.value.cart.copy(name = name))
             updateState {
-                copy(cart = Cart())
+                copy(cart = newLocalCart())
             }
             emitEffect(CartEffect.CloseDialogSaveCart)
         }

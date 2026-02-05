@@ -27,10 +27,9 @@ class HistoryTab : Tab {
     override fun Content() {
         val historyViewModel = ProvidedHistoryViewModel.current
 
-        LaunchedEffect(Unit) {
-            historyViewModel.loadHistory() //TODO: mas adelante, implementar singleton que al guardar carrito, haga un get de los carritos
-                    //de esta forma se llama una sola vez desde que se actualizó el carrito, y no cada vez que entra a la pantalla
-        }
+//        LaunchedEffect(Unit) {
+//            historyViewModel.()
+//        }
 
         Navigator(
             screen = HistoryScreen(historyViewModel)

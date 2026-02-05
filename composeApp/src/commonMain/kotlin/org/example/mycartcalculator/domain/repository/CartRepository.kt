@@ -1,56 +1,41 @@
 package org.example.mycartcalculator.domain.repository
 
+import kotlinx.coroutines.flow.Flow
 import org.example.mycartcalculator.database.CartDatabase
+import org.example.mycartcalculator.domain.dataSource.CartLocalDataSource
+import org.example.mycartcalculator.domain.dataSource.CartRemoteDataSource
 import org.example.mycartcalculator.domain.model.CartHistoryItem
 import org.example.mycartcalculator.domain.model.mlkit.Cart
-import kotlin.time.Clock
-import kotlin.time.ExperimentalTime
-import kotlin.uuid.ExperimentalUuidApi
-import kotlin.uuid.Uuid
+import org.example.mycartcalculator.util.SyncStatus
 
 class CartRepository(
-    database: CartDatabase
+    private val local: CartLocalDataSource,
+    private val remote: CartRemoteDataSource
 ) : ICartRepository {
 
-    private val queries = database.cartQueries
+    override fun observeHistory(): Flow<List<CartHistoryItem>> =
+        local.observeHistory()
 
-    @OptIn(ExperimentalTime::class, ExperimentalUuidApi::class)
-    override fun saveCart(cart: Cart) {
-        val cartId = Uuid.random()
-        val now = Clock.System.now().toEpochMilliseconds()
-
-        queries.transaction {
-            queries.insertCart(
-                id = cartId.toString(),
-                name = cart.name,
-                created_at = now,
-                total = cart.total
+    override suspend fun saveCart(cart: Cart) {
+        local.insertCart(
+            cart.copy(
+                syncStatus = SyncStatus.PENDING
             )
+        )
+    }
 
-            cart.items.forEach { product ->
-                queries.insertCartItem(
-                    id = Uuid.random().toString(),
-                    cart_id = cartId.toString(),
-                    name = product.name,
-                    price = product.price,
-                    quantity = product.quantity.toLong()
-                )
+    override suspend fun syncPending() {
+        val pending = local.getPending()
+
+        pending.forEach { cart ->
+            runCatching {
+                remote.postCart(cart)
+            }.onSuccess {
+                local.markSynced(cart.id)
+            }.onFailure {
+                local.markError(cart.id)
+                throw it
             }
         }
     }
-
-    override fun getHistory(): List<CartHistoryItem> {
-        return queries.selectAllCarts()
-            .executeAsList()
-            .map { cart ->
-                CartHistoryItem(
-                    id = cart.id,
-                    name = cart.name,
-                    date = cart.created_at,
-                    total = cart.total,
-                    items = queries.selectItemsByCart(cart.id).executeAsList()
-                )
-            }
-    }
-
 }

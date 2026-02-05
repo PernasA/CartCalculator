@@ -7,7 +7,7 @@ data class CartHistoryItem(
     val name: String,
     val date: Long,
     val total: Double,
-    val items: List<Cart_item>
+    val items: List<Cart_item>,
 ) {
     val itemsCount: Int get() = items.size
 }

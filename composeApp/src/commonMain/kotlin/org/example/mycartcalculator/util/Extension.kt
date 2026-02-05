@@ -4,6 +4,12 @@ import androidx.compose.ui.graphics.Color
 import kotlin.time.Instant
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toLocalDateTime
+import org.example.mycartcalculator.database.Cart_item
+import org.example.mycartcalculator.domain.model.CartHistoryItem
+import org.example.mycartcalculator.domain.model.dto.CartDto
+import org.example.mycartcalculator.domain.model.dto.CartItemDto
+import org.example.mycartcalculator.domain.model.mlkit.Cart
+import org.example.mycartcalculator.domain.model.product.Product
 import kotlin.math.absoluteValue
 import kotlin.math.roundToInt
 import kotlin.time.ExperimentalTime
@@ -47,3 +53,35 @@ fun String.avatarColor(): Color {
     )
     return colors[this.hashCode().absoluteValue % colors.size]
 }
+
+fun org.example.mycartcalculator.database.Cart.toDomain(
+    items: List<Cart_item>
+): Cart =
+    Cart(
+        id = id,
+        name = name,
+        createdAt = created_at,
+        items = items.map { it.toProduct() }
+    )
+
+fun Cart_item.toProduct(): Product =
+    Product(
+        name = this.name,
+        price = this.price,
+        quantity = this.quantity.toInt()
+    )
+
+fun Cart.toDto(): CartDto =
+    CartDto(
+        id = id,
+        name = name,
+        createdAt = createdAt,
+        total = total,
+        items = items.map {
+            CartItemDto(
+                name = it.name,
+                price = it.price,
+                quantity = it.quantity
+            )
+        }
+    )

@@ -2,8 +2,19 @@ CREATE TABLE cart (
     id TEXT NOT NULL PRIMARY KEY,
     name TEXT NOT NULL,
     created_at INTEGER NOT NULL,
-    total REAL NOT NULL
+    total REAL NOT NULL,
+    sync_status TEXT NOT NULL
 );
+
+selectPendingCarts:
+SELECT * FROM cart
+WHERE sync_status = 'PENDING';
+
+updateSyncStatus:
+UPDATE cart
+SET sync_status = ?
+WHERE id = ?;
+
 
 CREATE TABLE cart_item (
 id TEXT NOT NULL PRIMARY KEY,
@@ -26,8 +37,9 @@ INSERT INTO cart(
     id,
     name,
     created_at,
-    total
-) VALUES (?, ?, ?, ?);
+    total,
+    sync_status
+) VALUES (?, ?, ?, ?, ?);
 
 insertCartItem:
 INSERT INTO cart_item(

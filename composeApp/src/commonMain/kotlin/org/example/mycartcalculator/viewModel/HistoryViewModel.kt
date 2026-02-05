@@ -17,21 +17,20 @@ class HistoryViewModel(
     val state: StateFlow<HistoryState> = _state
 
     init {
-        loadHistory()
+        observeHistory()
     }
 
-    fun loadHistory() {
+    private fun observeHistory() {
         viewModelScope.launch {
-            println("Loading cart history...")
-            val carts = getHistoryUseCase()
-            println("Loaded carts from history: $carts")
-            _state.update {
-                it.copy(
-                    carts = carts,
-                    isLoading = false
-                )
-            }
+            getHistoryUseCase()
+                .collect { carts ->
+                    _state.update {
+                        it.copy(
+                            carts = carts,
+                            isLoading = false
+                        )
+                    }
+                }
         }
     }
-
 }
